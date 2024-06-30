@@ -41,8 +41,8 @@ private:
     const s16 R_GRIPPER_OPEN_POS_ = 2400;
     const s16 R_GRIPPER_CLOSE_POS_ = 2100;
 
-    ros::Publisher joint_state_pub_;
-    sensor_msgs::JointState joint_state_msg_;
+    ros::Publisher right_arm_joint_state_pub_;
+    sensor_msgs::JointState right_arm_joint_state_msg_;
     
     ros::Publisher right_gripper_pub_;
 };
