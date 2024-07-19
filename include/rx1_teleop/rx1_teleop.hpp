@@ -34,7 +34,7 @@ private:
     //std::vector<int> sts_servo_ids_ = {0, 1, 2, 3, 4, 5};
     const int ARM_SERVO_NUM_ = 7;
     std::vector<int> sts_servo_ids_ = {51, 52, 53, 54, 55, 56, 57};
-    std::vector<int> sts_servo_dirs_ = {-1, -1, 1, 1, 1, 1, -1};
+    std::vector<int> sts_servo_dirs_ = {-1, -1, 1, -1, 1, 1, -1};
 
     const u8 R_GRIPPER_CTRL_ID_ = 58;
     const u16 R_GRIPPER_TORQUE_ = 200; // %20

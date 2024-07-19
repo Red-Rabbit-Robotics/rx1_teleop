@@ -8,7 +8,7 @@ Rx1Teleop::Rx1Teleop(ros::NodeHandle& nh, ros::NodeHandle& priv_nh)
     : nh_(nh),
       priv_nh_(priv_nh)
 {
-    servo_port_ = "/dev/ttyUSB-arduino4.3";
+    servo_port_ = "/dev/ttyUSB-arduino4.2";
 
     if (!sts_servo_.begin(1000000, servo_port_.c_str()))
     {
@@ -42,8 +42,8 @@ Rx1Teleop::Rx1Teleop(ros::NodeHandle& nh, ros::NodeHandle& priv_nh)
     sts_servo_.WritePosEx(R_GRIPPER_CTRL_ID_, R_GRIPPER_OPEN_POS_, 0, 0); 
 
     // Initialize publishers
-    right_arm_joint_state_pub_ = nh_.advertise<sensor_msgs::JointState>("right_arm_joint_states", 10);
-    right_gripper_pub_ = nh_.advertise<std_msgs::Float32>("right_gripper", 10);
+    right_arm_joint_state_pub_ = nh_.advertise<sensor_msgs::JointState>("right_arm_joint_states", 100);
+    right_gripper_pub_ = nh_.advertise<std_msgs::Float32>("right_gripper", 100);
 
     ROS_INFO("[RX1_TELEOP] Teleop arm initialized");
 }
@@ -56,12 +56,16 @@ Rx1Teleop::~Rx1Teleop()
 void Rx1Teleop::spinOnce()
 {
     ros::spinOnce();
+
+    ros::Time update_time_start = ros::Time::now(); 
     update();
+    double update_time = (ros::Time::now() - update_time_start).toSec();
+    ROS_INFO("[RX1_TELEOP] teleop update time is %f sec", update_time );
 }
 
 void Rx1Teleop::spin()
 {
-    ros::Rate rate(30);
+    ros::Rate rate(100);
     while(ros::ok())
     {
         spinOnce();
