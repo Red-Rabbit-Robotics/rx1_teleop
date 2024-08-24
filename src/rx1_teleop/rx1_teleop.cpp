@@ -8,7 +8,7 @@ Rx1Teleop::Rx1Teleop(ros::NodeHandle& nh, ros::NodeHandle& priv_nh)
     : nh_(nh),
       priv_nh_(priv_nh)
 {
-    servo_port_ = "/dev/ttyUSB-arduino4.2";
+    nh_.param<std::string>("servo_port", servo_port_, "/dev/ttyUSB-arduino4.2");
 
     if (!sts_servo_.begin(1000000, servo_port_.c_str()))
     {
@@ -31,8 +31,6 @@ Rx1Teleop::Rx1Teleop(ros::NodeHandle& nh, ros::NodeHandle& priv_nh)
         right_arm_joint_state_msg_.position[i] = 0;
         right_arm_joint_state_msg_.name[i] = right_joint_name[i];
     }
-    //right_arm_joint_state_msg_.position[3] = -1.57;
-    //right_arm_joint_state_pub_.publish(right_arm_joint_state_msg_);
 
     left_arm_joint_state_msg_.header.stamp = ros::Time::now();
     left_arm_joint_state_msg_.name.resize(ARM_SERVO_NUM_);
@@ -49,8 +47,6 @@ Rx1Teleop::Rx1Teleop(ros::NodeHandle& nh, ros::NodeHandle& priv_nh)
         left_arm_joint_state_msg_.position[i] = 0;
         left_arm_joint_state_msg_.name[i] = left_joint_name[i];
     }
-    //left_arm_joint_state_pub_.publish(left_arm_joint_state_msg_);
-
 
     ROS_INFO("[RX1_TELEOP] Joint state initialized");
 
@@ -109,15 +105,8 @@ void Rx1Teleop::update()
     // Read all teleop arm servo value
     for (int i = 0; i < 7; i ++)
     {
-        //if (sts_servo_.FeedBack(sts_servo_ids_[i]) == -1)
-        //{ 
-        //    ROS_INFO("servo %d not responding", i);
-        //}
-        //else{
-        //    ROS_INFO("servo %d pos: %d", i, sts_servo_.ReadPos(sts_servo_ids_[i]));
-            right_arm_joint_state_msg_.position[i] = right_servo_dirs_[i] * (static_cast<float>(sts_servo_.ReadPos(right_servo_ids_[i])) - 2048.0) / 2048.0 * 3.14;
-            left_arm_joint_state_msg_.position[i] = left_servo_dirs_[i] * (static_cast<float>(sts_servo_.ReadPos(left_servo_ids_[i])) - 2048.0) / 2048.0 * 3.14;
-        //}
+        right_arm_joint_state_msg_.position[i] = right_servo_dirs_[i] * (static_cast<float>(sts_servo_.ReadPos(right_servo_ids_[i])) - 2048.0) / 2048.0 * 3.14;
+        left_arm_joint_state_msg_.position[i] = left_servo_dirs_[i] * (static_cast<float>(sts_servo_.ReadPos(left_servo_ids_[i])) - 2048.0) / 2048.0 * 3.14;
     }
 
     // Publish joint states
@@ -154,17 +143,6 @@ void Rx1Teleop::update()
     
     l_gripper_pos_msg.data = static_cast<float>(L_GRIPPER_OPEN_POS_ - l_gripper_var)/static_cast<float>(L_GRIPPER_OPEN_POS_-L_GRIPPER_CLOSE_POS_);
     left_gripper_pub_.publish(l_gripper_pos_msg);
-
-    /*
-    r_gripper_pos_msg.data = static_cast<float>(r_gripper_var-R_GRIPPER_CLOSE_POS_)/static_cast<float>(R_GRIPPER_OPEN_POS_-R_GRIPPER_CLOSE_POS_);
-    right_gripper_pub_.publish(r_gripper_pos_msg);
-
-    s16 pos_1, pos_2;
-    pos_1 = 2300 + r_gripper_pos_msg.data*100;
-    pos_2 = 2000 + r_gripper_pos_msg.data*300;
-    sts_servo_.WritePosEx(32, pos_1, 0, 100);
-    sts_servo_.WritePosEx(33, pos_2, 0, 100);
-    */
 }
 
 } // namespace rx1_teleop

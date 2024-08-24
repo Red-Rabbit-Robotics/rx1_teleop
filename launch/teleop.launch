@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
 
 <launch>
-  <node name="rx1_teleop_node" pkg="rx1_teleop" type="rx1_teleop_node" output="screen" />
+  <node name="rx1_teleop_node" pkg="rx1_teleop" type="rx1_teleop_node" output="screen">
+    <param name="servo_port" type="string" value="/dev/ttyUSB-arduino4.2" />
+  </node>
 </launch>

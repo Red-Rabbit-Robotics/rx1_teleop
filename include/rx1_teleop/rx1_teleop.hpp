@@ -1,7 +1,7 @@
 #ifndef RX1_TELEOP_H
 #define RX1_TELEOP_H
 
-#include "feetech_lib/SMSBL.h"
+#include "feetech_lib/SMS_STS.h"
 #include "feetech_lib/SCSCL.h"
 
 #include <ros/ros.h>
@@ -29,25 +29,24 @@ protected:
 
 private:
     std::string servo_port_;
-    SMSBL sts_servo_;
+    SMS_STS sts_servo_;
 
-    //std::vector<int> sts_servo_ids_ = {0, 1, 2, 3, 4, 5};
     const int ARM_SERVO_NUM_ = 7;
     std::vector<int> right_servo_ids_ = {51, 52, 53, 54, 55, 56, 57};
     std::vector<int> right_servo_dirs_ = {-1, -1, 1, -1, 1, 1, -1};
 
     std::vector<int> left_servo_ids_ = {61, 62, 63, 64, 65, 66, 67};
-    std::vector<int> left_servo_dirs_ = {-1, -1, 1, 1, 1, 1, -1};
+    std::vector<int> left_servo_dirs_ = {-1, -1, 1, 1, 1, -1, -1};
 
     const u8 R_GRIPPER_CTRL_ID_ = 58;
-    const u16 R_GRIPPER_TORQUE_ = 200; // %20
-    const s16 R_GRIPPER_OPEN_POS_ = 2400;
-    const s16 R_GRIPPER_CLOSE_POS_ = 2100;
+    const u16 R_GRIPPER_TORQUE_ = 200; // %20 of maximum torque
+    const s16 R_GRIPPER_OPEN_POS_ = 2400; // adjust based on actual intended value
+    const s16 R_GRIPPER_CLOSE_POS_ = 2100; // adjust based on actual intended value
 
     const u8 L_GRIPPER_CTRL_ID_ = 68;
-    const u16 L_GRIPPER_TORQUE_ = 200; // %20
-    const s16 L_GRIPPER_OPEN_POS_ = 1748;
-    const s16 L_GRIPPER_CLOSE_POS_ = 2048;
+    const u16 L_GRIPPER_TORQUE_ = 200; // %20 of maximum torque
+    const s16 L_GRIPPER_OPEN_POS_ = 1748; // adjust based on actual intended value
+    const s16 L_GRIPPER_CLOSE_POS_ = 2048; // adjust based on actual intended value
 
     ros::Publisher right_arm_joint_state_pub_;
     sensor_msgs::JointState right_arm_joint_state_msg_;
