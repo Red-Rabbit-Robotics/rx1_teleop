@@ -8,7 +8,7 @@ Rx1Teleop::Rx1Teleop(ros::NodeHandle& nh, ros::NodeHandle& priv_nh)
     : nh_(nh),
       priv_nh_(priv_nh)
 {
-    nh_.param<std::string>("servo_port", servo_port_, "/dev/ttyUSB-arduino4.2");
+    nh_.param<std::string>("rx1_teleop_node/servo_port", servo_port_, "/dev/ttyUSB-arduino4.2");
 
     if (!sts_servo_.begin(1000000, servo_port_.c_str()))
     {
